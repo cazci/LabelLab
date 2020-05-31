@@ -154,27 +154,43 @@ class ProjectDetailScreen extends StatelessWidget {
 
   Widget _buildCover(ProjectDetailState state) {
     return Container(
-      child: Row(
-        children: state.project.images
-            .sublist(0, min(state.project.images.length, 4))
-            .map(
-              (image) => Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: CachedNetworkImageProvider(image.imageUrl),
-                          fit: BoxFit.cover)),
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 8.0),
+      child: Stack(
+        children: <Widget>[
+          Row(
+            children: state.project.images
+                .sublist(0, min(state.project.images.length, 4))
+                .map(
+                  (image) => Expanded(
                     child: Container(
-                      decoration:
-                          BoxDecoration(color: Colors.black.withOpacity(0.1)),
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: CachedNetworkImageProvider(image.imageUrl),
+                              fit: BoxFit.cover)),
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 8.0, sigmaY: 8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.1)),
+                        ),
+                      ),
                     ),
                   ),
-                ),
+                )
+                .toList(),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.center,
+                end: Alignment.bottomCenter,
+                colors: [
+                  Color.fromRGBO(255, 255, 255, 0),
+                  Colors.black38,
+                ],
               ),
-            )
-            .toList(),
+            ),
+          )
+        ],
       ),
     );
   }
